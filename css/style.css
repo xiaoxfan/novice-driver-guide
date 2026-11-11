@@ -1,0 +1,126 @@
+/* 新手驾驶员指导系统 - 样式 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #0b0e14; font-family: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif; color: #e8ecf2; }
+#app { position: fixed; inset: 0; }
+canvas#view { display: block; width: 100%; height: 100%; }
+
+/* ---------- 通用 UI ---------- */
+.glass { background: rgba(13, 20, 32, 0.78); backdrop-filter: blur(10px); border: 1px solid rgba(120, 150, 200, 0.22); border-radius: 12px; }
+button { font-family: inherit; cursor: pointer; }
+
+/* ---------- 主菜单 ---------- */
+#menu { position: fixed; inset: 0; z-index: 50; overflow-y: auto; background: linear-gradient(160deg, #0c1424 0%, #101c33 55%, #0a1520 100%); }
+#menu .head { padding: 34px 48px 10px; }
+#menu h1 { font-size: 30px; letter-spacing: 2px; color: #fff; display: flex; align-items: center; gap: 14px; }
+#menu h1 .logo { font-size: 34px; }
+#menu .sub { margin-top: 8px; color: #93a7c4; font-size: 14px; }
+#menu .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; padding: 24px 48px 60px; }
+.card { position: relative; padding: 20px 20px 16px; border-radius: 14px; background: rgba(255,255,255,0.045); border: 1px solid rgba(130,160,210,0.18); cursor: pointer; transition: all .18s; }
+.card:hover { transform: translateY(-3px); background: rgba(90,140,230,0.14); border-color: rgba(120,180,255,0.55); box-shadow: 0 10px 30px rgba(40,90,200,0.25); }
+.card .no { position: absolute; top: 14px; right: 16px; font-size: 12px; color: #5c7396; letter-spacing: 1px; }
+.card .ico { font-size: 30px; }
+.card h3 { margin: 10px 0 6px; font-size: 18px; color: #fff; }
+.card p { font-size: 12.5px; line-height: 1.65; color: #9db0cc; min-height: 52px; }
+.card .tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.card .tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; background: rgba(80,130,220,0.18); color: #9cc3ff; border: 1px solid rgba(100,150,240,0.3); }
+
+/* ---------- 课程须知弹窗 ---------- */
+#brief { position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center; background: rgba(5, 9, 16, 0.72); }
+#brief.show { display: flex; }
+#brief .box { width: min(680px, 92vw); max-height: 86vh; overflow-y: auto; padding: 30px 34px; }
+#brief h2 { font-size: 24px; color: #fff; display: flex; gap: 12px; align-items: center; }
+#brief .desc { margin: 12px 0 18px; color: #a9bad4; font-size: 14px; line-height: 1.8; }
+#brief h4 { margin: 14px 0 8px; color: #7db4ff; font-size: 15px; }
+#brief ul { list-style: none; }
+#brief li { position: relative; padding: 5px 0 5px 26px; font-size: 13.5px; line-height: 1.7; color: #c5d3e8; }
+#brief li::before { content: "▪"; position: absolute; left: 6px; color: #57a05a; }
+#brief .btns { display: flex; gap: 14px; margin-top: 24px; }
+.btn { padding: 11px 30px; border-radius: 10px; font-size: 15px; border: none; letter-spacing: 1px; }
+.btn.primary { background: linear-gradient(135deg, #2f7cf6, #1e56c8); color: #fff; }
+.btn.primary:hover { filter: brightness(1.15); }
+.btn.ghost { background: transparent; border: 1px solid #4a5f80; color: #b9c8de; }
+.btn.ghost:hover { border-color: #7ea4d8; color: #fff; }
+
+/* ---------- HUD ---------- */
+#hud { position: fixed; inset: 0; z-index: 20; pointer-events: none; display: none; }
+#hud.show { display: block; }
+
+/* 顶部当前步骤 */
+#stepBar { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); width: min(720px, 94vw); padding: 12px 20px; text-align: center; }
+#stepBar .k { font-size: 11px; color: #6fa8ff; letter-spacing: 2px; }
+#stepBar .title { font-size: 18px; color: #fff; margin: 4px 0 6px; font-weight: 600; }
+#stepBar .tip { font-size: 13px; color: #ffd9a0; line-height: 1.6; }
+#stepBar .arrowline { position: absolute; left: 0; top: 0; height: 3px; border-radius: 12px 12px 0 0; background: linear-gradient(90deg, #2f7cf6, #55e07a); transition: width .4s; }
+
+/* 左侧步骤清单 */
+#stepList { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 232px; padding: 12px 10px; max-height: 70vh; overflow-y: auto; }
+#stepList .st { display: flex; gap: 8px; align-items: flex-start; padding: 6px 6px; font-size: 12.5px; color: #8ea3c2; line-height: 1.5; border-radius: 8px; }
+#stepList .st .dot { flex: 0 0 16px; height: 16px; border-radius: 50%; border: 2px solid #4c6284; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+#stepList .st.cur { background: rgba(60,120,230,0.16); color: #fff; }
+#stepList .st.cur .dot { border-color: #58a6ff; box-shadow: 0 0 8px rgba(80,160,255,.8); }
+#stepList .st.done { color: #6f8; }
+#stepList .st.done .dot { border-color: #4ac66a; background: #2f7a3f; color: #fff; }
+#stepList .tt { font-size: 11px; color: #58749c; letter-spacing: 2px; padding: 4px 6px; }
+
+/* 仪表盘（左下） */
+#dash { position: absolute; left: 14px; bottom: 14px; padding: 14px 18px; display: flex; gap: 22px; align-items: center; }
+#dash .speed { text-align: center; }
+#dash .speed .v { font-size: 40px; font-weight: 700; color: #fff; font-family: "SF Mono", Menlo, Consolas, monospace; line-height: 1; }
+#dash .speed .u { font-size: 11px; color: #7d92b3; letter-spacing: 2px; margin-top: 3px; }
+#dash .gearBox { display: flex; gap: 6px; }
+#dash .g { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #56719a; background: rgba(255,255,255,0.06); border: 1px solid rgba(120,150,200,0.2); }
+#dash .g.on { color: #fff; background: #2f7cf6; border-color: #7ab0ff; }
+#dash .g.rOn { background: #e0652f; border-color: #ffab7a; }
+#dash .blink { display: flex; gap: 10px; }
+#dash .bl { font-size: 20px; opacity: .25; transition: opacity .1s; }
+#dash .bl.on { opacity: 1; }
+
+/* 分数/违规（右下） */
+#scorePanel { position: absolute; right: 14px; bottom: 14px; width: 250px; padding: 12px 16px; }
+#scorePanel .row { display: flex; justify-content: space-between; align-items: baseline; }
+#scorePanel .lab { font-size: 11px; color: #7d92b3; letter-spacing: 2px; }
+#scorePanel .val { font-size: 26px; font-weight: 700; color: #6fe08a; font-family: Menlo, monospace; }
+#scorePanel .val.bad { color: #ff7a6a; }
+#scorePanel .viols { margin-top: 6px; max-height: 108px; overflow-y: auto; }
+#scorePanel .viols .v { font-size: 11.5px; color: #ff9a8a; padding: 3px 0; border-bottom: 1px dashed rgba(255,150,130,0.15); }
+#scorePanel .empty { font-size: 11.5px; color: #56719a; padding-top: 4px; }
+
+/* 摄像机/控制提示（右上） */
+#camTip { position: absolute; right: 14px; top: 14px; padding: 10px 14px; font-size: 12px; color: #9db0cc; text-align: right; line-height: 1.7; }
+#camTip b { color: #fff; }
+
+/* Toast */
+#toast { position: absolute; top: 108px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.toastItem { padding: 10px 26px; border-radius: 30px; font-size: 15px; letter-spacing: 1px; animation: pop .25s; white-space: nowrap; }
+.toastItem.ok { background: rgba(38, 120, 60, 0.92); color: #d9ffe2; box-shadow: 0 4px 20px rgba(40,160,80,.35); }
+.toastItem.err { background: rgba(170, 45, 35, 0.92); color: #ffe0da; box-shadow: 0 4px 20px rgba(200,60,40,.35); }
+.toastItem.info { background: rgba(30, 80, 180, 0.92); color: #dcecff; }
+@keyframes pop { from { transform: scale(.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* 完成面板 */
+#result { position: fixed; inset: 0; z-index: 55; display: none; align-items: center; justify-content: center; background: rgba(5, 9, 16, 0.7); }
+#result.show { display: flex; }
+#result .box { width: min(560px, 92vw); padding: 34px 38px; text-align: center; }
+#result .big { font-size: 44px; margin-bottom: 6px; }
+#result h2 { font-size: 26px; color: #fff; }
+#result .scoreBig { font-size: 56px; font-weight: 800; font-family: Menlo, monospace; margin: 14px 0 4px; }
+#result .stats { margin: 16px 0; color: #a9bad4; font-size: 14px; line-height: 2; }
+#result .btns { display: flex; gap: 14px; justify-content: center; margin-top: 10px; }
+
+/* 键位帮助（底部中央） */
+#keys { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); padding: 8px 18px; font-size: 12px; color: #8ea3c2; white-space: nowrap; }
+#keys b { color: #d7e4f7; background: rgba(255,255,255,0.1); padding: 1px 6px; border-radius: 5px; margin: 0 2px; }
+
+/* 场景标题 */
+#sceneTitle { position: absolute; top: 14px; left: 14px; padding: 10px 16px; font-size: 14px; }
+#sceneTitle .n { color: #fff; font-weight: 600; font-size: 16px; }
+#sceneTitle .m { color: #7d92b3; font-size: 11px; margin-top: 2px; letter-spacing: 1px; }
+
+/* 红闪 */
+#flash { position: fixed; inset: 0; z-index: 40; background: rgba(255, 40, 20, 0.28); opacity: 0; pointer-events: none; transition: opacity .5s; }
+
+@media (max-width: 900px) {
+  #stepList { display: none; }
+  #keys { display: none; }
+  #camTip { display: none; }
+}

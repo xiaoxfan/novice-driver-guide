@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新手驾驶员指导系统 · 按中国交规</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- 主菜单 -->
+  <div id="menu">
+    <div class="head">
+      <h1><span class="logo">🚘</span>新手驾驶员指导系统 <span style="font-size:15px;color:#7d92b3;font-weight:400">Driver Training Simulator</span></h1>
+      <div class="sub">按照《中华人民共和国道路交通安全法》及驾考标准设计 · 3D 交互训练 · 覆盖倒车入库 / 侧方停车 / 变道超车 / 汇入高速 / 环岛 / 可变车道 / 潮汐车道</div>
+    </div>
+    <div class="cards" id="menuCards"></div>
+  </div>
+
+  <!-- 课程须知 -->
+  <div id="brief">
+    <div class="box glass" id="briefBox"></div>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="stepBar" class="glass">
+      <div class="arrowline" id="stepProg"></div>
+      <div class="k">当前任务</div>
+      <div class="title" id="stepTitle">—</div>
+      <div class="tip" id="stepTip">—</div>
+    </div>
+    <div id="stepList" class="glass"></div>
+    <div id="sceneTitle" class="glass"><div class="n"></div><div class="m"></div></div>
+    <div id="camTip" class="glass">
+      <b id="camName">第三人称追尾视角</b>（按 C 切换）<br>
+      W/S 油门·刹车 · A/D 转向 · Q/E 转向灯<br>空格 手刹 · R 重来 · Esc 菜单
+    </div>
+    <div id="dash" class="glass">
+      <div class="speed"><div class="v" id="speedV">0</div><div class="u">KM/H</div></div>
+      <div class="gearBox"><div class="g" id="gearD">D</div><div class="g" id="gearR">R</div></div>
+      <div class="blink"><span class="bl" id="blinkL">⬅</span><span class="bl" id="blinkR">➡</span></div>
+    </div>
+    <div id="scorePanel" class="glass">
+      <div class="row"><span class="lab">得分</span><span class="val" id="scoreV">100</span></div>
+      <div class="viols" id="violList"><div class="empty">暂无违规，继续保持！</div></div>
+    </div>
+    <div id="toast"></div>
+    <div id="keys" class="glass"><b>W</b>油门 <b>S</b>刹车/倒挡 <b>A</b><b>D</b>转向 <b>Q</b><b>E</b>转向灯 <b>C</b>视角 <b>R</b>重来 <b>Esc</b>菜单</div>
+  </div>
+
+  <!-- 结果面板 -->
+  <div id="result">
+    <div class="box glass">
+      <div class="big" id="resIco">🎉</div>
+      <h2 id="resTitle">训练通过！</h2>
+      <div class="scoreBig" id="resScore">100</div>
+      <div class="stats" id="resStats"></div>
+      <div class="btns">
+        <button class="btn primary" onclick="window.__restart()">再练一次</button>
+        <button class="btn ghost" id="btnMenu">返回菜单</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="flash"></div>
+
+  <script src="js/lib/three.min.js"></script>
+  <script src="js/util.js"></script>
+  <script src="js/car.js"></script>
+  <script src="js/scenarios.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
