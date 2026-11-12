@@ -154,12 +154,13 @@ class Car {
     let accel = 0;
     if (this.gear === 'D' || this.gear === 'N') {
       if (input.throttle > 0 && this.gear === 'N') this.gear = 'D';
-      if (this.gear === 'D') accel = input.throttle * (this.isTruck ? 3.0 : 4.6);
+      if (this.gear === 'D') accel = input.throttle * (this.isTruck ? 2.4 : 3.2);   // 温和加速, 便于新手控制
     }
     if (this.gear === 'R') accel = -input.throttle * 1.5;
-    let brake = input.brake * 9 + (input.handbrake ? 6 : 0);
+    let brake = input.brake * 10 + (input.handbrake ? 7 : 0);
     // 阻力
-    const drag = 0.04 + (onRoad ? 0 : 1.4) + (Math.abs(this.speed) > 0.5 ? 0.12 : 0);
+    const coast = (input.throttle > 0 || input.brake > 0 || input.handbrake) ? 0 : 0.55;   // 松油门滑行减速(发动机牵阻)
+    const drag = 0.04 + (onRoad ? 0 : 1.4) + (Math.abs(this.speed) > 0.5 ? 0.12 : 0) + coast;
     let v = this.speed + accel * dt;
     if (input.brake > 0 || input.handbrake) {
       const dec = brake * dt;
@@ -171,10 +172,11 @@ class Car {
     if (!onRoad) v = clamp(v, -3, 14);
     this.speed = v;
     this.braking = input.brake > 0 || input.handbrake;
-    // 转向
-    const speedFactor = 1 / (1 + Math.abs(v) * 0.055);
-    const target = input.steer * this.maxSteer * speedFactor;
-    this.steer = lerp(this.steer, target, clamp(dt * 7, 0, 1));
+    // 转向: 低速大转角(泊车), 高速限制转角(横向加速度上限 ~5m/s², 防止转向过灵)
+    const av = Math.abs(v);
+    const latCap = av > 0.5 ? Math.min(this.maxSteer, 5 * this.wheelBase / (av * av)) : this.maxSteer;
+    const target = input.steer * latCap;
+    this.steer = lerp(this.steer, target, clamp(dt * 4.5, 0, 1));   // 平滑打方向
     // 自行车模型
     if (Math.abs(v) > 0.01) {
       this.heading = angNorm(this.heading + (v / this.wheelBase) * Math.tan(this.steer) * dt);

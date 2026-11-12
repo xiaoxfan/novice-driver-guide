@@ -148,6 +148,7 @@
     el.sceneTitle.querySelector('.n').textContent = def.ico + ' ' + def.name;
     el.sceneTitle.querySelector('.m').textContent = '限速 ' + def.speedLimit + ' km/h · 按中国交规';
     el.menu.classList.remove('show'); el.menu.style.display = 'none';
+    el.brief.classList.remove('show');
     el.result.classList.remove('show');
     el.hud.classList.add('show');
     refreshScore();
@@ -311,8 +312,9 @@
       perspCam.position.copy(G.camPos);
       perspCam.lookAt(car.x + f.x * 8, 1.2, car.z + f.z * 8);
     } else if (mode === 'hood') {
-      perspCam.position.set(car.x + f.x * 0.4, 1.42, car.z + f.z * 0.4);
-      perspCam.lookAt(car.x + f.x * 30, 1.1, car.z + f.z * 30);
+      const g = rightOf(car.heading);
+      perspCam.position.set(car.x + f.x * 1.25 - g.x * 0.35, 1.52, car.z + f.z * 1.25 - g.z * 0.35);
+      perspCam.lookAt(car.x + f.x * 30 - g.x * 0.35, 1.25, car.z + f.z * 30 - g.z * 0.35);
     } else {
       const view = 46;
       const asp = window.innerWidth / window.innerHeight;

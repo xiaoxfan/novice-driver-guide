@@ -505,10 +505,22 @@ function createWorldChecker(car, world, aiCars, nowFn) {
       if (crashFx) crashFx();
       car.speed *= -0.25;
     }
+    // 车身采样点: 4 角 + 4 边中点(防止短线段从车身下方穿过漏判)
+    const f = fwd(car.heading), rg = rightOf(car.heading);
+    const hl2 = carHL, hw2 = carHW;
+    const pts = cs.concat([
+      { x: car.x + f.x * hl2, z: car.z + f.z * hl2 }, { x: car.x - f.x * hl2, z: car.z - f.z * hl2 },
+      { x: car.x + rg.x * hw2, z: car.z + rg.z * hw2 }, { x: car.x - rg.x * hw2, z: car.z - rg.z * hw2 }
+    ]);
     for (let i = 0; i < world.forbiddenLines.length; i++) {
       const L = world.forbiddenLines[i];
+      // 线段两端各内缩 0.45m: 车角从库线端头外侧经过不算压线(消除误判)
+      const dx = L.x2 - L.x1, dz = L.z2 - L.z1, len = Math.hypot(dx, dz);
+      if (len < 1.2) continue;
+      const ux = dx / len, uz = dz / len, ins = 0.45;
+      const ax = L.x1 + ux * ins, az = L.z1 + uz * ins, bx = L.x2 - ux * ins, bz = L.z2 - uz * ins;
       let on = false;
-      for (const c of cs) if (pointSegDist(c.x, c.z, L.x1, L.z1, L.x2, L.z2) < 0.12) { on = true; break; }
+      for (const c of pts) if (pointSegDist(c.x, c.z, ax, az, bx, bz) < 0.1) { on = true; break; }
       if (on) {
         const key = 'line' + i;
         if (!st.cool[key] || now - st.cool[key] > 4000) {
