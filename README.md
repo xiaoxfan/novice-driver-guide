@@ -3,6 +3,8 @@
 基于 **Three.js** 的 3D 驾驶训练模拟器，严格按照《中华人民共和国道路交通安全法》与驾考标准设计，
 帮助新手驾驶员在虚拟环境中练习 7 个高频真实驾驶场景。
 
+**🎮 在线体验：<https://xiaoxfan.github.io/novice-driver-guide/>**（推荐 Chrome / Edge，无需安装）
+
 ![菜单](docs/menu.png)
 
 ## ✨ 功能特性
